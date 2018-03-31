@@ -13,12 +13,12 @@ let values = ['Ace', 'King', 'Queen', 'Jack','Ten', 'Nine', 'Eight', 'Seven',
 let textArea = document.getElementById('text-area');
 let newGameButton = document.getElementById('new-game-button');
 let hitButton = document.getElementById('hit-button');
-let stayutton = document.getElementById('stay-button');
+let stayButton = document.getElementById('stay-button');
 
 //Game variables 
 let gameStarted = false;
 let gameOver = false;
-let playerWon = false;
+let PlayerWon = false;
 let dealerCards = [];
 let playerCards = [];
 let dealerScore = 0;
@@ -28,7 +28,7 @@ let deck = [];
 
 
 hitButton.style.display = 'none';
-stayutton.style.display = 'none';
+stayButton.style.display = 'none';
 showStatus();
 
 //Event Listner when game is started 
@@ -36,7 +36,7 @@ newGameButton.addEventListener('click', function(){
 
   gameStarted = true;
   gameOver = false;
-  playerWon = false;
+  PlayerWon = false;
 
   // new deck creation 
   deck = createDeck();
@@ -50,11 +50,59 @@ newGameButton.addEventListener('click', function(){
 
   newGameButton.style.display = 'none';
   hitButton.style.display = 'inline';
-  stayutton.style.display = 'inline';
+  stayButton.style.display = 'inline';
   showStatus();
 
 });
 
+//Event Listner to hit
+hitButton.addEventListener('click', function(){
+  playerCards.push(getNextCard());
+  checkForEndOfGame();
+  showStatus();
+});
+
+//Event Listner to stay
+stayButton.addEventListener('click', function(){
+  gameOver = true;
+  checkForEndOfGame();
+  showStatus();
+});
+
+// Check for end of the game
+function checkForEndOfGame(){
+  updateScores();
+
+  if(gameOver){
+    //let dealer take cards
+    while(dealerScore < playerScore 
+          && playerScore <=21
+          && dealerScore <=21){
+      dealerCards.push(getNextCard())
+      updateScores();
+    }
+
+  }
+
+  if(playerScore >21){
+    PlayerWon = false;
+    gameOver = true;
+  }
+  else if(dealerScore >21){
+    PlayerWon = true;
+    gameOver = true;
+  }
+  else if(gameOver){
+    if (playerScore > dealerScore){
+      PlayerWon = true;
+    }
+    else{
+      PlayerWon = false;
+    }
+
+    
+  }
+}
 
 //Creating deck to start the game
 function createDeck(){
@@ -185,7 +233,7 @@ function showStatus(){
     }
     newGameButton.style.display = 'inline';
     hitButton.style.display = 'none';
-    stayutton.style.display = 'none';
+    stayButton.style.display = 'none';
   }
 }
 
