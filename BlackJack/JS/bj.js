@@ -3,9 +3,56 @@
 * Created By Farah
 */
 
-// Cards and Suits
-let suits  = ["Hearts", "Clubs", "Diamonds",  "Spades"];
-let values = ["Ace", "King", "Queen", "Jack","Ten", "Nine", "Eight", "Seven", "Six", "Five", "Four", "Three", "Two" ]
+// Cards variables - suits and values
+let suits  = ['Hearts', 'Clubs', 'Diamonds',  'Spades'];
+let values = ['Ace', 'King', 'Queen', 'Jack','Ten', 'Nine', 'Eight', 'Seven', 
+              'Six', 'Five', 'Four', 'Three', 'Two' ];
+
+
+//DOM variables 
+let textArea = document.getElementById('text-area');
+let newGameButton = document.getElementById('new-game-button');
+let hitButton = document.getElementById('hit-button');
+let stayutton = document.getElementById('stay-button');
+
+//Game variables 
+let gameStarted = false;
+let gameover = false;
+let playerWon = false;
+let dealerCards = [];
+let playerCards = [];
+let dealerScore = 0;
+let playerScore = 0;
+let deck = [];
+
+
+hitButton.style.display = 'none';
+stayutton.style.display = 'none';
+showStatus();
+
+//Event Listner when game is started 
+newGameButton.addEventListener('click', function(){
+
+  gameStarted = true;
+  gameover = false;
+  playerWon = false;
+
+  // new deck creation 
+  deck = createDeck();
+
+  //serve dealer
+  dealerCards = [ getNextCard(), getNextCard()];
+
+  //serve player 
+  playerCards = [ getNextCard(), getNextCard()];
+
+  newGameButton.style.display = 'none';
+  hitButton.style.display = 'inline';
+  stayutton.style.display = 'inline';
+  showStatus();
+
+});
+
 
 //Creating deck to start the game
 function createDeck(){
@@ -17,7 +64,7 @@ function createDeck(){
       let card = {
           suit: suits[suitIdx], 
           value: values[valueIdx]
-        }
+        };
       deck.push( card );
     }
   }
@@ -29,18 +76,14 @@ function getNextCard(){
   return deck.shift() ;
 }
 
-// new deck creation 
-let deck=createDeck();
-
 // get the string value of th card
 function getCardString(card){
-  return card.suit + " of " + card.value;
+  return card.value + ' of ' +  card.suit;
 }
 
-//temp values assigned for the card
-let playerCards = [ getNextCard(), getNextCard()];
-
-// temp view of the card on console
-console.log("Welcome to Black Jack");
-console.log("  Player Cards", getCardString(playerCard[0]) );
-console.log("  Player Cards", getCardString(playerCard[1]) );
+// show game status
+function showStatus(){
+  if(!gameStarted){
+    textArea.innerText = 'Welcome to BlackJack!';
+  }
+}
